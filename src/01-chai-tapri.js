@@ -28,4 +28,20 @@
  */
 export function chaiTapriRevenue(customers) {
   // Your code here
+  if (Number.isInteger(customers) === false || customers <= 0) {
+    return { totalChai: 0, totalRevenue: 0 };
+  }
+
+  let specialCustomerCount = 0;
+  for (let i = 3; i <= customers; i = i + 3) {
+    specialCustomerCount++;
+  }
+  //we can directly do this customers/3 but since we have to use loops here i solved the question using loop.
+  let normalCustomers = customers - specialCustomerCount;
+  let specialCustomerPrice = specialCustomerCount * 15;
+  let normalCustomersPrice = normalCustomers * 10;
+  return {
+    totalChai: customers,
+    totalRevenue: specialCustomerPrice + normalCustomersPrice,
+  };
 }

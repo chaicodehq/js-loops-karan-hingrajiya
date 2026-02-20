@@ -33,4 +33,33 @@
  */
 export function calculateAutoFare(distance, waitingMinutes = 0) {
   // Your code here
+  if (
+    typeof distance !== "number" ||
+    distance <= 0 ||
+    waitingMinutes < 0 ||
+    typeof waitingMinutes !== "number" ||
+    isNaN(distance) ||
+    isNaN(waitingMinutes) // can be pass edge case bcz NaN typeof is number so i explicitly check if isNaN or not
+  ) {
+    return -1;
+  }
+
+  let dist = Math.ceil(distance);
+  let totalFare = 0;
+  let i = 1;
+
+  while (i <= dist) {
+    if (i === 1) totalFare += 30;
+    if (i > 1 && i <= 5) totalFare += 15;
+    if (i > 5) totalFare += 10;
+    i++;
+  }
+
+  let waitingMinCalc = Math.ceil(waitingMinutes);
+  if (waitingMinCalc % 2 !== 0) {
+    waitingMinCalc += 1;
+  }
+
+  waitingMinCalc = waitingMinCalc / 2; //we need pairs in 2 so here i did like this if we divide it into 2 we always get the pairs of 2 counts
+  return totalFare + waitingMinCalc * 5;
 }

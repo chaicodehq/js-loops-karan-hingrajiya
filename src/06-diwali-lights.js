@@ -39,4 +39,44 @@
  */
 export function diwaliLightsPlan(lightStrings, budget) {
   // Your code here
+  if (
+    !Array.isArray(lightStrings) ||
+    typeof budget !== "number" ||
+    budget <= 0
+  ) {
+    return { selected: [], totalLength: 0, totalCost: 0 };
+  }
+
+  let totalCost = 0;
+  let selected = [];
+  let totalLength = 0;
+  for (const elem of lightStrings) {
+    let currentCost = 0;
+    if (elem.color === "golden") {
+      currentCost = elem.length * 50;
+    } else if (elem.color === "white") {
+      currentCost = elem.length * 30;
+    } else if (elem.color === "multicolor") {
+      currentCost = elem.length * 40;
+    } else {
+      currentCost = elem.length * 35;
+    }
+    let obj = {
+      color: elem.color,
+      length: elem.length,
+      cost: currentCost,
+    };
+    selected.push(obj);
+    totalLength += elem.length;
+    totalCost += currentCost;
+  }
+
+  while (totalCost > budget && selected.length > 0) {
+    let lastIdx = selected.length - 1; //since the last idx is popping we always need the lastidx from selected[] array and then we check if its totalcost > budget or not
+    totalCost = totalCost - selected[lastIdx].cost;
+    totalLength -= selected[lastIdx].length;
+    selected.pop();
+  }
+
+  return { selected, totalLength, totalCost };
 }

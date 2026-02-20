@@ -16,9 +16,9 @@
  *
  * Pattern for n=3:
  *     *
- *   * *
+ *    * *
  *   * * *
- *   * *
+ *    * *
  *     *
  *
  * (Each row is a string in the returned array)
@@ -37,4 +37,49 @@
  */
 export function rangoli(n) {
   // Your code here
+  if (!Number.isInteger(n) || n <= 0) {
+    return [];
+  }
+
+  let res = [];
+  //upper body diamond
+  for (let i = 0; i < n; i++) {
+    let spaces = n - 1 - i;
+    let currPattern = "";
+    for (let j = 0; j < spaces; j++) {
+      //spaces loop
+      //bcz in last spaces is remaining like this "* * * " i dont need last spaces so i did this.
+      currPattern += " ";
+    }
+    // currPattern += "*";
+    //* pattern loop
+    for (let k = 0; k <= i; k++) {
+      if (k === i) {
+        currPattern += "*";
+      } else {
+        currPattern += "* ";
+      }
+    }
+    res.push(currPattern);
+  }
+
+  for (let i = n - 2; i >= 0; i--) {
+    // n-2 here bcz we dont need repeated pattern of n like if n=3 (***) its already done on upper half we need form n = 2 then n=1 like that
+    //reverse loop for lower half
+    let spaces = n - 1 - i;
+    let currPattern = "";
+    for (let j = 0; j < spaces; j++) {
+      currPattern += " ";
+    }
+    for (let k = 0; k <= i; k++) {
+      if (k === i) {
+        currPattern += "*";
+      } else {
+        currPattern += "* ";
+      }
+    }
+    res.push(currPattern);
+  }
+
+  return res;
 }

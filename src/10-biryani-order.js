@@ -35,4 +35,45 @@
  */
 export function biryaniBatchProcessor(orders) {
   // Your code here
+  if (!Array.isArray(orders) || orders.length === 0) {
+    return { totalBatches: 0, totalPlates: 0, ordersProcessed: 0 };
+  }
+
+  let ordersProcessed = 0;
+  let totalBatches = 0;
+  let i = 0;
+  let totalPlates = 0;
+  do {
+    let currOrder = orders[i];
+    if (isNaN(currOrder) || !Number.isInteger(currOrder) || currOrder <= 0) {
+      i++;
+      continue;
+    }
+
+    // if (currOrder > 5) {
+    //   totalBatches += Math.ceil(currOrder / 5);
+    // } else {
+    //   totalBatches = totalBatches + 1; //if order not greater than 5 than only 1 batch will processed
+    // }
+    //i implemented it my self but since the question asks me to use do..while i just implemented this optimal solution first as it comes in my mind first now i am doing do..while approach
+
+    let largeOrders = currOrder;
+    do {
+      // for (let i = 1; i <= 5; i++) {
+      //   largeOrders -= 1;
+      //   if(largeOrders <= 0){
+      //     break;
+      //   }
+      // }
+      largeOrders -= 5;
+      //i can just add this line but the idea of including it never came in my mind LOL i just use another for loop which is just purely not needed but i solved the question useing for loop but this cleaner approach AI gave me and i implemented it here.
+      totalBatches++;
+    } while (largeOrders > 0);
+
+    ordersProcessed++;
+    totalPlates += currOrder;
+    i++;
+  } while (i < orders.length);
+
+  return { totalBatches, totalPlates, ordersProcessed };
 }

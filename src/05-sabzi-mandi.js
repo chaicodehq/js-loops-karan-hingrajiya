@@ -31,4 +31,36 @@
  */
 export function sabziMandiBill(shoppingList, priceList) {
   // Your code here
+  if (
+    !Array.isArray(shoppingList) ||
+    shoppingList.length === 0 ||
+    typeof priceList !== "object" ||
+    priceList === null ||
+    Object.keys(priceList).length === 0
+  ) {
+    return { items: [], totalBill: 0 };
+  }
+
+  let items = [];
+  let totalBill = 0;
+  for (const elem of shoppingList) {
+    if (
+      Object.hasOwn(priceList, elem.name) &&
+      typeof priceList[elem.name] === "number" &&
+      priceList[elem.name] <= 80
+    ) {
+      let obj = {
+        name: elem.name,
+        qty: elem.qty,
+        cost: elem.qty * priceList[elem.name],
+      };
+      totalBill += obj.cost; //accessing upper object cost which is created in memory first then we are accessing it.
+      items.push(obj);
+    }
+    // else {// no need for continue bcz if is not satisfied it will move to next iteration
+    //   continue;
+    // }
+  }
+
+  return { items, totalBill };
 }

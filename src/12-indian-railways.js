@@ -46,4 +46,63 @@
  */
 export function railwayReservation(passengers, trains) {
   // Your code here
+  if (
+    !Array.isArray(passengers) ||
+    !Array.isArray(trains) ||
+    passengers.length === 0 ||
+    trains.length === 0
+  ) {
+    return [];
+  }
+
+  let resArr = [];
+  for (let i = 0; i < passengers.length; i++) {
+    let currPassenger = passengers[i];
+
+    for (let j = 0; j < trains.length; j++) {
+      let currTrain = trains[j];
+
+      if (currPassenger.trainNumber === currTrain.trainNumber) {
+        let assignedClass;
+        let status;
+        if (currTrain.seats[currPassenger.preferred] > 0) {
+          assignedClass = currPassenger.preferred;
+          status = "confirmed";
+          currTrain.seats[currPassenger.preferred] -= 1;
+        } else if (
+          currTrain.seats[currPassenger.preferred] <= 0 &&
+          currTrain.seats[currPassenger.fallback] > 0
+        ) {
+          assignedClass = currPassenger.fallback;
+          status = "confirmed";
+          currTrain.seats[currPassenger.fallback] -= 1;
+        } else {
+          assignedClass = currPassenger.preferred;
+          status = "waitlisted";
+          // currTrain[currPassenger.fallback] -= 1;
+        }
+        let obj = {
+          name: currPassenger.name,
+          trainNumber: currPassenger.trainNumber,
+          class: assignedClass,
+          status,
+        };
+        resArr.push(obj);
+        break; //train found no need for furthur travel
+      }
+
+      if (
+        j === trains.length - 1 &&
+        currPassenger.trainNumber !== currTrain.trainNumber
+      ) {
+        resArr.push({
+          name: currPassenger.name,
+          trainNumber: currPassenger.trainNumber,
+          class: null,
+          status: "train_not_found",
+        });
+      }
+    }
+  }
+  return resArr;
 }
